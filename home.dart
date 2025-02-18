@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 class Home extends StatefulWidget {
   const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
 }
-
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
@@ -14,12 +11,13 @@ class _HomeState extends State<Home> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             child: Column(
               children: [
-                RowWithContainers(),
-                const SizedBox(height: 16),
-                RowAndColumnWidget(),
+                _buildRow1(),
+                SizedBox(height: 16),
+                _buildRow2(),
+                SizedBox(height: 16),
               ],
             ),
           ),
@@ -27,115 +25,77 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
-
-// Row with containers
-class RowWithContainers extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  // Refactored Row 1
+  Widget _buildRow1() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          color: Colors.red,
-          height: 60,
-          width: 60,
-        ),
-        const SizedBox(width: 16),
+        _buildColoredContainer(Colors.red, 60, 59),
+        SizedBox(width: 16),
         Expanded(
-          child: Container(
-            color: Colors.blue,
-            height: 60,
-            width: 60,
-          ),
+          child: _buildColoredContainer(Colors.blue, 60, 60),
         ),
-        const SizedBox(width: 16),
-        Container(
-          color: Colors.orange,
-          height: 60,
-          width: 60,
-        ),
+        SizedBox(width: 16),
+        _buildColoredContainer(Colors.orange, 60, 60),
       ],
     );
   }
-}
-
-// Column with nested widgets and stack inside CircleAvatar
-class RowAndColumnWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  // Refactored Row 2
+  Widget _buildRow2() {
     return Row(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min, // Ensure it takes only as much space as needed
           children: [
-            Container(
-              color: Colors.teal,
-              height: 50,
-              width: 50,
-            ),
-            const SizedBox(height: 16),
-            Container(
-              color: Colors.blueGrey,
-              height: 40,
-              width: 40,
-            ),
-            const SizedBox(height: 16),
-            Container(
-              color: Colors.amber,
-              height: 30,
-              width: 30,
-            ),
-            const Divider(),
-            CircleAvatarWithStack(),
-            const Divider(),
-            const Text('ِAbdurabh'),
+            _buildColoredContainer(Colors.teal, 50, 50),
+            SizedBox(height: 16),
+            _buildColoredContainer(Colors.blueGrey, 40, 40),
+            SizedBox(height: 16),
+            _buildColoredContainer(Colors.amber, 30, 30),
+            Divider(),
+            _buildRowWithStack(),
+            Divider(),
+            Text('Abdurabh'),
           ],
         ),
       ],
     );
   }
-}
-
-// CircleAvatar with a Stack of containers inside it
-class CircleAvatarWithStack extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: Colors.deepPurpleAccent,
-      radius: 100.0,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              height: 100.0,
-              width: 100.0,
-            ),
+  // Method to generate a colored container widget
+  Widget _buildColoredContainer(Color color, double height, double width) {
+    return Container(
+      color: color,
+      height: height,
+      width: width,
+    );
+  }
+  // Refactored Row with Stack
+  Widget _buildRowWithStack() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.grey,
+          radius: 100.0,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              _buildStackedContainer(100.0, Colors.transparent),
+              _buildStackedContainer(80.0, Colors.white24),
+              _buildStackedContainer(65.0, Colors.black),
+              _buildStackedContainer(48.0, Colors.white30),
+            ],
           ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.white24,
-              height: 80,
-              width: 80,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.black,
-              height: 65,
-              width: 65,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.black,
-              height: 48,
-              width: 48,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+  // Method to generate stacked container inside CircleAvatar
+  Widget _buildStackedContainer(double size, Color color) {
+    return Container(
+      height: size,
+      width: size,
+      color: color,
     );
   }
 }
